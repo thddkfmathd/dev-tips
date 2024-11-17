@@ -1,0 +1,24 @@
+1. 문제 상황
+Context Provider로 전역 상태 관리 시 리렌더링 문제 발생
+React 프로젝트에서 Context를 사용해 전역적으로 Notification이나 Message 같은 알림 기능을 제공할 때, Context에 포함된 state나 useState로 선언된 값이 변경되면 Provider 하위의 모든 컴포넌트가 다시 렌더링되는 현상이 발생할 수 있습니다.
+특히, 전역 상태가 Context에 의해 관리되다 보니, 알림창을 보여주는 showMessage나 showNotification 함수를 호출한 컴포넌트까지 의도치 않게 다시 렌더링되는 문제가 나타났습니다.
+2. 원인 분석
+Provider의 state 변화로 인한 하위 컴포넌트 리렌더링
+Context는 Provider 내부의 state가 변경될 때 Provider 하위에 있는 모든 컴포넌트를 다시 렌더링합니다.
+이때, useState로 선언한 상태(setMessage, setNotification 등)가 showMessage 호출과 무관한 param이나 useEffect를 가진 하위 컴포넌트까지 다시 렌더링하게 만들며, param이나 useEffect가 다시 실행되는 문제가 발생했습니다.
+3. 해결 방법
+useReducer로 Context의 상태 관리 최적화
+
+useReducer를 활용하여 Context의 상태를 지역화하고, 특정 상태 변화만 트리거하여 필요한 부분에서만 상태를 변경했습니다.
+useReducer는 state 변경을 특정 액션(action)에 따라 제어하므로 state의 지역화 및 조건부 업데이트가 가능하며, 하위 컴포넌트의 불필요한 리렌더링을 최소화하는 데 적합합니다.
+함수형 업데이트와 memo를 사용한 리렌더링 최적화
+
+알림창 기능처럼 전역으로 제공해야 하지만, 단순 함수로 작동하는 경우에는 useCallback을 통해 최적화했습니다.
+또한, React.memo로 showMessage, showNotification 등을 사용하는 컴포넌트를 메모이제이션하여 성능을 최적화했습니다.
+4. 코드 예시
+useReducer로 상태를 지역화하고 showMessage, showNotification을 최적화한 최종 코드를 보여줍니다. React.memo와 useCallback의 적용을 통해 최적화된 Context 관리 방법을 설명합니다.
+5. 결론
+Context 사용 시 전역 상태로 인한 리렌더링 문제 해결 방법
+React Context로 전역 상태를 관리할 때, useReducer를 활용하여 상태를 세분화하고 필요한 상태 변화에만 의존하도록 구현하여 불필요한 리렌더링 문제를 해결했습니다.
+전역 상태 관리의 복잡성을 최소화하면서, UI 성능과 사용성을 높일 수 있었습니다.
+ㅎㅎㅎ
