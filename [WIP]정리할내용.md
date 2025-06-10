@@ -9,6 +9,14 @@
 - anySign4PC과 같은 보안프로그램
   - 분석 내용
 - 코드작성중 추가내용 http 관련
+  - org.springframework.web.client.RestTemplate,  org.springframework.http.*
+  - RestTemplate 재사용가능, 재사용하지 않아야하는 요소는
+  - RestTemplate -> RestClient (v?)
+    - reference : https://poalim.tistory.com/59
+    - httpClient,RestTemplate,RestClient,WebClient,HTTP Interface
+    - reference : https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface
+    - MultiValueMap 사용이유 (formdata)(공식적인 방식?)
+    - Form 전송 포맷 매핑할 수 있는 구조(내부적으로 Map<String, List<String>> 구조) 
 <br> 
 
 2.  active mq(JMS) + Artemis
