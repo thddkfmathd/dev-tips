@@ -38,4 +38,11 @@
 8. 오프라인 posgres 구축
 9. 파일 반입 및 환경세팅 , 필요문서 (노트 참고)
 - ssh 서버접속이후 TMOUT=0 설정
-10. 
+10. 오프라인 스프링 환경세팅
+  - nexus
+  - .m2
+  - offline maven update & build
+  - db.properties, setting.xml 수정
+  - tomcat setting
+  - 라이브러리추가  activemq .. etc
+  - 
