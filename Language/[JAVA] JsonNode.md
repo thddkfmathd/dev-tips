@@ -1,0 +1,25 @@
+- JsonNode란?
+- JsonNode의 특징 - 불변클래스
+  - JsonNode는 읽기 전용 API만 제공 
+- JsonNode의 장단점
+- JsonNode의 필요성
+- JsonNode의 적용 환경
+- 최상위 객체 JsonNode - 하위객체 : ObjectNode (객체형 mutable),  ArrayNode  (배열형 mutable) ,MissingNode , ValueNode (텍스트, 숫자, 불리언 등)
+- JsonNode메서드
+  - get vs path
+  - get (엄격 npe 가능성)
+    - return값 JsonNode 또는 없을때 null ->  null체크하고 asText() 하는로직으로 구성
+    - 뽑아서 체크 :JsonNode dataLengthNode = item.get(Layout.dataLength.name());
+    -  if ( dataLengthNode != null && dataLengthNode.isInt() )  ,,,, if( dataValueNode != null && dataValueNode.isTextual() )
+  - path : (npe 없음)
+    - return값 JsonNode (없을때 MissingNode, NPE발생 안함을 보장 )(MissingNode.asText() == "")
+  - asText(null),asText("") 로 기본값
+  - 
+- JsonNode 불변객체 이유 / 그럼에도 원본을 변경해야한다면?
+  - ObjectNode ,ArrayNode 사용 put,set?
+  - get이나 path로 뽑은 JsonNode를 다운캐스팅 (ObjectNode ...) 해서 변경 -> 원본 객체 JsonNode에 변경 적용
+  - 모든트리?를 JsonNode타입으로 받을수있으나 (최상위) instanseof ObjectNode 와 같이 ObjectNode로 만들어진 객체인지 타입체크이후 다운캐스팅해야함
+  - ObjectNode로 강제 캐스팅할때 ArrayNode와 같은 다른 JsonNode 하위 객체로 만들어진 거면 ClassCastException 남
+- JsonNode deepCopy 어디까지 deepCopy? depth가 깊다면?
+  
+
