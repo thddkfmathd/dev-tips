@@ -22,4 +22,38 @@
   - ObjectNode로 강제 캐스팅할때 ArrayNode와 같은 다른 JsonNode 하위 객체로 만들어진 거면 ClassCastException 남
 - JsonNode deepCopy 어디까지 deepCopy? depth가 깊다면?
   
+```JAVA
+asisChildren.forEach(asisChild -> {
+	   ObjectNode asisChildObjectNode = (ObjectNode)asisChild
+    // asisChildObjectNode 값 변경코드
+    // asisChildren 에도 변경 반영 ( asisChild는 asisChildren 내부의 객체 참조값을 공유 ) 
+});
+
+```
+- 위코드의 forEach 루프 내부에서는 asisChildren에 변경이 반영
+- stream은?
+  - Stream API는 불변성(immutability)과 side-effect-free 처리를 지향
+  - 원본의 불변을 보장하고 새로운 객체를 리턴하는게 기본철학 (순수 함수형 패턴'을 지향 -> 입력만 보고 출력 결정, 같은걸넣으면 같은 값이 나와야함)
+  - 수정은가능하나 권장하지않음
+```JAVA
+// List<JsonNode>로 변환해서 .stream() 쓰는 방법도 있음
+StreamSupport.stream(asisChildren.spliterator(), false).forEach(node -> {
+    if (node instanceof ObjectNode) {
+        ((ObjectNode) node).put("check", "Y");
+    }
+});
+```
+- StreamSupport.stream
+  -  Iterable한 자료구조에서 Stream을 만듬
+  -  .iterator() 처럼 순회가능한 ArrayNode의 Spliterator제공
+  -  Spliterator를 StreamSupport.stream(...) 로 감싸면 Stream Api 사용가능
+
+- 비교
+순회하면서 수정하거나 검사만 할 때
+→ StreamSupport.stream(...).forEach(...)
+→ 가장 가볍고 빠름.
+
+필터링하거나 특정 조건 추출 후 다른 스트림 작업 계속해야 할 때
+→ List<JsonNode> list = StreamSupport.stream(...).collect(...) 후 .stream()
+→ 가독성과 편의성 ↑, 단 중간 복사 비용 존재. 스트림 API 유연하게 사용 가능
 
