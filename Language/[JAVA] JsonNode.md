@@ -57,3 +57,20 @@ StreamSupport.stream(asisChildren.spliterator(), false).forEach(node -> {
 → List<JsonNode> list = StreamSupport.stream(...).collect(...) 후 .stream()
 → 가독성과 편의성 ↑, 단 중간 복사 비용 존재. 스트림 API 유연하게 사용 가능
 
+
+- put, set
+	- put(String,JsonNode) deprecated된 이유는 더 명확한 타입 체크와 API 일관성을 위해 set()을 쓰도록 권장
+ 	- **명확한 구분 목적**  
+  		- `put()`은 **기본 값(Value)** 을 넣는 함수로 유지됨  
+  		- `set()`은 **JsonNode 구조(Node)** 를 설정하는 함수로 통일됨
+
+	- **API 일관성 유지**  
+  		- `ObjectNode.set()`  
+  		- `ArrayNode.set()`  
+  		→ 같은 방식으로 사용 가능하도록 개선됨
+   
+ 메서드 | 목적 | 매개변수 타입 | 현재 상태 |
+|--------|------|----------------|------------|
+| `put(String, 기본형/문자열)` | 필드에 **간단한 값** (문자열, 숫자, 불린 등)을 넣을 때 사용<br>→ 내부에서 `TextNode`, `IntNode` 등으로 자동 래핑됨 | `int`, `long`, `double`, `boolean`, `String` 등 | 정상 사용 |
+| `put(String, JsonNode)` | 예전 버전에서 `JsonNode` 자체를 넣을 때 사용되던 방식 | `JsonNode` | deprecated |
+| `set(String, JsonNode)` | **JsonNode 객체** 자체를 필드에 설정할 때 사용 | `JsonNode` | 권장 방식 |
